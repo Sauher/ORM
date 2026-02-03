@@ -1,20 +1,13 @@
-const express = require('express')
-var cors = require('cors')
+const app = require('./config/app');
+const { Sequelize }= require('./models/index');
 
-const app = express()
-
-const tables = require('./modules/tables')
-const logger = require('./utils/logger')
-
-app.use(cors());
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
-
-app.use('/uploads', express.static('uploads'));
-app.use('/',tables)
-
-
+try{
+    await sequelize.authenticate();
+    console.log('Database connection has been established successfully.');
+} catch (error) {
+    console.error('Unable to connect to the database:', error);
+}
 
 app.listen(process.env.PORT, () => {
-    logger.info(`Server is listening on http://localhost:${process.env.PORT}`)
+    console.log(`Server is listening on http://localhost:${process.env.PORT}`)
 });
