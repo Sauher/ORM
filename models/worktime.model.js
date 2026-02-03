@@ -1,22 +1,28 @@
 const { DataTypes } = require("sequelize");
-const sequelize = require(".");
 
 module.exports = (sequelize) => {
-  const Worktime = sequelize.define("Worktimes", {
+  const Worktime = sequelize.define("worktimes", {
     id: {
       type: DataTypes.UUID,
       primaryKey: true,
-      autoIncrement: true
+      defaultValue: DataTypes.UUIDV4
     },
     userId: {
       type: DataTypes.STRING(100),
       allowNull: false
     },
-
-    description: {
-      type: DataTypes.STRING,
-      allowNull: false
+    date: {
+        type: DataTypes.DATE,
+        allowNull: false
     },
+    start: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    end: {
+        type: DataTypes.STRING,
+        allowNull: false
+    }
   },
   {
     timestamps: true,
@@ -29,5 +35,5 @@ module.exports = (sequelize) => {
   }
 );
 
-  return User;
+  return Worktime;
 };

@@ -2,14 +2,14 @@ const { Sequelize} = require("sequelize");
 
 const dbConfig = require("../config/database.js");
 
-const sequelize = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.password, {
+console.log(dbConfig);
+const sequelize = new Sequelize(dbConfig.database, dbConfig.user, dbConfig.password, {
   host: dbConfig.host,
   dialect: dbConfig.dialect,
-  port: dbConfig.port,
-  logging: 
-  dbConfig.logging
+  port:3306,
+  logging: dbConfig.logging
 });
-const User = 'models/user.model.js';
-const Worktime = 'models/worktime.model.js';
+const User = require('./user.model.js')(sequelize);
+const Worktime = require('./worktime.model.js')(sequelize);
 
-module.exports = sequelize;
+module.exports = {sequelize, User, Worktime};

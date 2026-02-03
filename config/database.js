@@ -8,5 +8,5 @@ module.exports = {
   database: process.env.DBNAME,
   port: process.env.PORT,
   dialect: 'mysql',
-  logging: console.log
+  logging: false
 }

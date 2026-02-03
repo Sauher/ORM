@@ -1,20 +1,20 @@
-
+const bcrypt = require("bcrypt");
 const { DataTypes } = require("sequelize");
-const sequelize = require(".");
+const {v4 : uuidv4} = require("uuid");
 
 module.exports = (sequelize) => {
-  const User = sequelize.define("Users", {
+  const User = sequelize.define("users", {
     id: {
       type: DataTypes.UUID,
       primaryKey: true,
-      autoIncrement: true
+      defaultValue: DataTypes.UUIDV4
     },
     name: {
       type: DataTypes.STRING(100),
       allowNull: false
     },
     email: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(100),
       allowNull: false
     },
     password: {
@@ -23,37 +23,54 @@ module.exports = (sequelize) => {
     },
     role: {
       type: DataTypes.STRING(20),
-      allowNull: false
+      allowNull: false,
+      defaultValue: "user"
     },
     secret: {
-      type: DataTypes.STRING,
-      allowNull: false
+      type: DataTypes.UUID,
+      allowNull: false,
+      defaultValue: DataTypes.UUIDV4
     },
     phone: {
-      type: DataTypes.STRING,
-      allowNull: false
+      type: DataTypes.STRING(30),
+      allowNull: true
     },
     address: {
-      type: DataTypes.STRING,
-      allowNull: false  
+      type: DataTypes.STRING(100),
+      allowNull: true
     },
     description: {
-      type: DataTypes.STRING,
-      allowNull: false
+      type: DataTypes.TEXT,
+      allowNull: true
     },
     reg: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: false,
+      defaultValue: DataTypes.NOW
     },
     last: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: true
     },
     status: {
-      type: DataTypes.STRING,
-      allowNull: false
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: true
     }
-
+  }
+  ,{
+    timestamps: true,
+    hooks: {
+        beforeCreate: async (user) =>{
+            user.password = await bcrypt.hash(user.password, 10);
+        },
+        beforeUpdate: async (user) =>{
+           if(user.changed("password")){
+                user.password = await bcrypt.hash(user.password, 10);
+                user.secret = uuidv4();
+            }
+        }
+    }
   });
 
   return User;

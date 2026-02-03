@@ -1,3 +1,35 @@
 ### get all users
 
-GET /
+GET http://localhost:3000/users
+Content-Type: application/json
+
+### Get user by ID
+
+GET http://localhost:3000/users/916ed077-33b2-4cec-b253-89a2fbc78937
+Content-Type: application/json
+
+###registration
+
+POST http://localhost:3000/users/registration
+Content-Type: application/json
+
+{
+    "name": "John",
+    "email": "john@example.com",
+    "password": "password123",
+    "confirmPassword": "password123"
+}
+
+### Update user
+
+PATCH http://localhost:3000/users/916ed077-33b2-4cec-b253-89a2fbc78937
+Content-Type: application/json
+
+{
+    "phone": "123-456-7890",
+    "password": "newpassword123"
+}
+### Delete user
+
+DELETE http://localhost:3000/users/916ed077-33b2-4cec-b253-89a2fbc78937
+Content-Type: application/json
