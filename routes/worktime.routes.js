@@ -1,6 +1,5 @@
 const router = require("express").Router();
-const { Worktime } = require("../models/index");
-
+const { Worktime, operatorMap } = require("../models/index");
 
 
 router.get("/", async (req, res) => {
@@ -11,6 +10,26 @@ router.get("/", async (req, res) => {
         .catch(err => {
             res.status(500).json({ error: err.message });
         });
+});
+
+// Get worktimes by field
+router.get("/:field/:op/:value", async (req, res) => {
+    try{
+        const { field, op, value } = req.params;
+        
+        if (!operatorMap[op]) {
+            return res.status(400).json({ error: "Invalid operator" });
+        }
+        const where = {
+            [field]: {
+                [operatorMap[op]]: op === 'lk' ? `%${value}%` : value
+            }
+        }
+        const worktimes = await Worktime.findAll({ where });
+        res.status(200).json(worktimes);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
 });
 
 router.get("/:id", async (req, res) => {

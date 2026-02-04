@@ -1,7 +1,9 @@
 const router = require("express").Router();
+const bcrypt = require("bcrypt");
 const {User} = require("../models/index");
+const {generateToken,authenticate} = require("../middleware/auth_middleware");
 
-router.get("/", async (req, res) => {
+router.get("/",authenticate, async (req, res) => {
     User.findAll()
         .then(users => {
             res.json(users);
@@ -18,6 +20,29 @@ router.get("/:id", async (req, res) => {
         res.json(user);
     } else {
         res.status(404).json({ message: "User not found" });
+    }
+});
+
+router.post("/login", async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const user = await User.scope("withPassword").findOne({ where: { email } });
+        if (!user) {
+            return res.status(401).json({ message: "No user found" });
+        }
+        if(!user.status) {
+            return res.status(403).json({ message: "User is inactive" });
+        }
+        if (user && await bcrypt.compare(password, user.password)) {
+            await user.update({ lastLogin: new Date() });
+
+            const token = generateToken(user);
+            res.status(200).json({ token });
+        } else {
+            res.status(401).json({ message: "Invalid email or password" });
+        }
+    } catch (err) {
+        res.status(500).json({ error: err.message });
     }
 });
 

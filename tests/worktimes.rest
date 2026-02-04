@@ -1,0 +1,35 @@
+### Get all worktimes
+
+GET http://localhost:3000/worktimes
+
+### Get a worktime by UUID
+
+GET http://localhost:3000/worktimes/9cabc135-069c-403c-a146-e987870c16b8
+
+### Get worktimes by userID
+
+GET http://localhost:3000/worktimes/userId/eq/a26dbf4a-d3ff-41d5-abd3-085155ed623d
+### Create a new worktime
+
+POST http://localhost:3000/worktimes
+Content-Type: application/json
+
+{
+    "userId": "a26dbf4a-d3ff-41d5-abd3-085155ed623d",
+    "date": "2023-01-03",
+    "start": "2023-01-03T09:00:00Z",
+    "end": "2023-01-03T17:00:00Z"
+}
+
+### Update a worktime
+
+PATCH http://localhost:3000/worktimes/9cabc135-069c-403c-a146-e987870c16b8
+Content-Type: application/json
+
+{
+    "end": "2023-01-03T18:00:00Z"
+}
+
+### Delete a worktime
+
+DELETE http://localhost:3000/worktimes/9cabc135-069c-403c-a146-e987870c16b8

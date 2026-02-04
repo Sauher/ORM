@@ -1,4 +1,4 @@
-const { Sequelize} = require("sequelize");
+const { Op, Sequelize} = require("sequelize");
 
 const dbConfig = require("../config/database.js");
 
@@ -12,4 +12,14 @@ const sequelize = new Sequelize(dbConfig.database, dbConfig.user, dbConfig.passw
 const User = require('./user.model.js')(sequelize);
 const Worktime = require('./worktime.model.js')(sequelize);
 
-module.exports = {sequelize, User, Worktime};
+const operatorMap = {
+    eq: Op.eq,
+    lt: Op.lt,
+    gt: Op.gt,
+    lte: Op.lte,
+    gte: Op.gte,
+    like: Op.like,
+    not: Op.not
+}
+
+module.exports = {sequelize, User, Worktime, operatorMap};

@@ -70,6 +70,14 @@ module.exports = (sequelize) => {
                 user.secret = uuidv4();
             }
         }
+    },
+    defaultScope: {
+        attributes: { exclude: ["password", "secret"] }
+    },
+    scopes: {
+        withPassword: {
+            attributes: {}
+        }
     }
   });
 
