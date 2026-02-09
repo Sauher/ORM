@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const bcrypt = require("bcrypt");
-const {User} = require("../models/index");
+const {User, operatorMap} = require("../models/index");
 const {generateToken,authenticate} = require("../middleware/auth_middleware");
 
 router.get("/",authenticate, async (req, res) => {
@@ -13,13 +13,32 @@ router.get("/",authenticate, async (req, res) => {
         });
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:id",authenticate, async (req, res) => {
     const id = req.params.id;
     const user = await User.findByPk(id);
     if (user) {
         res.json(user);
     } else {
         res.status(404).json({ message: "User not found" });
+    }
+});
+
+router.get("/:field/:op/:value", async (req, res) => {
+    try{
+        const { field, op, value } = req.params;
+        
+        if (!operatorMap[op]) {
+            return res.status(400).json({ error: "Invalid operator" });
+        }
+        const where = {
+            [field]: {
+                [operatorMap[op]]: op === 'lk' ? `%${value}%` : value
+            }
+        }
+        const user = await User.findAll({ where });
+        res.status(200).json(user);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
     }
 });
 
@@ -48,9 +67,9 @@ router.post("/login", async (req, res) => {
 
 router.post("/registration", async (req, res) => {
     try{
-    const { name, email, password, confirmPassword} = req.body;
+    const { name, email, password, confirm} = req.body;
 
-    if (password !== confirmPassword) {
+    if (password !== confirm) {
         return res.status(400).json({ message: "Passwords do not match" });
     }
 
@@ -62,7 +81,7 @@ router.post("/registration", async (req, res) => {
     
 });
 
-router.patch("/:id", async (req, res) => {
+router.patch("/:id",authenticate, async (req, res) => {
 const id = req.params.id;
 const user = await User.findByPk(id);
 if (!user){
@@ -73,7 +92,7 @@ res.status(200).json(updateduser);
 });
 
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id",authenticate, async (req, res) => {
     const id = req.params.id;
     const user = await User.findByPk(id);
     if (!user) {
