@@ -9,7 +9,7 @@ router.post('/single',upload.single("file"),(req,res)=>{
  }
 
  res.status(200).json({
-    url: `${uploadDir}/${req.file.filename}`,
+    url: `${process.env.UPLOAD_DIR}/${req.file.filename}`,
     originalname: req.file.originalname,
     filename: req.file.filename,
     size: req.file.size,
@@ -17,13 +17,13 @@ router.post('/single',upload.single("file"),(req,res)=>{
  })
 })
 
-router.post('/multi',authenticate,upload.array("files",10),(req,res)=>{
+router.post('/multiple',upload.array("files",10),(req,res)=>{
     if(!req.files){
         return res.status(400).json({message: "No file uploaded!"})
     }
 
     const files = (req.files).map((file) =>({
-            url: `${uploadDir}/${file.filename}`,
+            url: `${process.env.UPLOAD_DIR}/${file.filename}`,
             originalname: file.originalname,
             filename: file.filename,
             size: file.size,
