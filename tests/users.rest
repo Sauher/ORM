@@ -1,7 +1,7 @@
 ### get all users
 
 GET http://localhost:3000/users
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEzMTMwYTUzLTZmMzctNDRlYi04MzI5LTgwZTA1NGIzZjdmOSIsImlhdCI6MTc3MDE5NzY5MiwiZXhwIjoxNzcwMjAxMjkyfQ.nTjcM2E-lQRNH5j1KkGaFnJg1UVoM5gLuJgyMgV3s3E
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImFjYTMwZjBjLTU2ZjMtNGFjZi04NzdhLTBiNjUwYzM2YjUyNSIsImlhdCI6MTc3MDYyMTU3MiwiZXhwIjoxNzcwNjI1MTcyfQ.K8xfX69bRWJSW8KKS-2sHRA9Z0KMrtoFlEM_O_f4EOw
 Content-Type: application/json
 
 ### Get user by ID

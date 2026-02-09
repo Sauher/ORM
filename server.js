@@ -8,6 +8,7 @@ const {sequelize} = require('./models/index');
         sequelize.sync({alter : true});
 
         app.listen(process.env.PORT, () => {
+        
         console.log(`Server is listening on http://localhost:${process.env.PORT}`)
     });
     } catch (error) {

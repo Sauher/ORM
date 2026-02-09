@@ -69,9 +69,9 @@ router.post("/registration", async (req, res) => {
     try{
     const { name, email, password, confirm} = req.body;
 
-    if (password !== confirm) {
+    /*if (password !== confirm) {
         return res.status(400).json({ message: "Passwords do not match" });
-    }
+    }*/
 
     const user =  await User.create({ name, email, password});
     res.status(201).json(user);
